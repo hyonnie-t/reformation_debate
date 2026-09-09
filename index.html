@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>1517년, 논쟁의 시작 — 루터와 교회</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    /* 1517년, 인쇄술로 막 퍼지기 시작한 논쟁 게시문 컨셉. 아이보리 종이 + 루터(신교=청색)
+       / 교회(구교=적색) 대비, 강조는 --seal-gold 한 군데만. */
+    --paper:#EAE3D3;
+    --page:#FBF8EF;
+    --ink:#2B2420;
+    --sub:#6b5f4f;
+    --rule:#d9cfb8;
+    --reform-blue:#3A5A78;
+    --reform-blue-pale:#e7edf1;
+    --church-red:#7A2E2E;
+    --church-red-pale:#f2e6e2;
+    --seal-gold:#B8863B;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, #f6f1e2 0%, var(--paper) 55%, #ddd2b3 100%) fixed;
+    color:var(--ink);
+    font-size:16.5px;
+    line-height:1.7;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .serif{font-family:"Noto Serif KR",serif;}
+
+  .preview-banner{
+    background:#1f1a14; color:#f4ece0; text-align:center;
+    font-size:12.5px; font-weight:700; letter-spacing:.3px;
+    padding:9px; position:sticky; top:0; z-index:20; display:none;
+  }
+  .disclaimer-banner{
+    background:#2a221a; color:#e6d7ba; text-align:center;
+    font-size:12px; font-weight:700; letter-spacing:.3px;
+    padding:9px 14px; border-bottom:1px solid var(--seal-gold);
+  }
+
+  .header{
+    background:#241d16;
+    color:#f2e9d5; padding:28px 20px 22px; text-align:center;
+    border-bottom:3px solid var(--seal-gold);
+  }
+  .header .eyebrow{
+    font-size:12px; font-weight:700; letter-spacing:1.6px; color:#d8b96f; opacity:.9;
+  }
+  .header .header-rule{width:34px; height:1px; background:var(--seal-gold); margin:14px auto; opacity:.8;}
+  .header h1{margin:0 0 8px; font-size:21px; font-weight:700; font-family:"Noto Serif KR",serif; line-height:1.45;}
+  .header p{margin:0; font-size:13.5px; font-style:italic; color:#c9baa0; opacity:.9;}
+
+  .wrap{max-width:660px; margin:0 auto; padding:20px 16px 90px;}
+  .screen{display:none;}
+  .screen.active{display:block; animation:fadeUp .35s ease;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .card{
+    background:var(--page); border:1px solid var(--rule);
+    border-radius:10px; padding:24px 20px; margin-bottom:16px;
+    box-shadow:0 1px 2px rgba(43,36,32,0.05), 0 10px 24px rgba(43,36,32,0.06);
+  }
+  .badge-chip{
+    display:inline-block; color:var(--seal-gold);
+    font-size:12px; font-weight:800; letter-spacing:1.4px;
+    padding:0 0 7px; margin-bottom:14px; border-bottom:1px solid var(--seal-gold);
+  }
+  h2{font-size:19px; margin:0 0 10px; font-weight:700; font-family:"Noto Serif KR",serif; line-height:1.5;}
+  h3{font-size:14.5px; margin:14px 0 6px; font-weight:700; font-family:"Noto Serif KR",serif;}
+  p{margin:0 0 10px;}
+  .sub{color:var(--sub); font-size:14px; line-height:1.65;}
+  .note{font-size:12.5px; color:var(--sub); font-style:italic; margin-top:8px;}
+
+  label{display:block; font-weight:700; color:var(--sub); font-size:13px; margin:14px 0 6px;}
+  input[type=text]{
+    width:100%; padding:14px 15px; font-size:16.5px; font-family:inherit;
+    border:1px solid var(--rule); border-radius:8px; background:var(--page); min-height:48px;
+  }
+  input:focus{outline:none; border-color:var(--reform-blue); box-shadow:0 0 0 3px rgba(58,90,120,0.12);}
+  textarea{
+    width:100%; min-height:120px; padding:14px 15px; font-size:16px;
+    border:1px solid var(--rule); border-radius:8px; background:var(--page);
+    resize:vertical; font-family:inherit; line-height:1.7;
+  }
+  textarea:focus{outline:none; border-color:var(--reform-blue); box-shadow:0 0 0 3px rgba(58,90,120,0.12);}
+  textarea[readonly]{background:#efe9d9; color:#4a4030;}
+
+  .btn{
+    display:block; width:100%; padding:15px 20px; font-size:16px; font-weight:700;
+    border:none; border-radius:8px; cursor:pointer; min-height:50px; margin-top:14px;
+    transition:transform .1s ease; font-family:inherit;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--reform-blue); color:#f6f3ec; box-shadow:0 3px 10px rgba(58,90,120,0.28);}
+  .btn-primary:disabled{background:#c9c2b3; color:#fff; cursor:not-allowed; box-shadow:none;}
+  .btn-outline{background:transparent; color:var(--reform-blue); border:1.5px solid var(--reform-blue);}
+  .btn-seal{background:var(--seal-gold); color:#241d16; box-shadow:0 3px 10px rgba(184,134,59,0.3); text-align:center; text-decoration:none;}
+
+  /* 화면1: 자료 카드 — 좌(루터=청)/우(교회=적) 대비 */
+  .debate-wrap{display:flex; flex-direction:column; border-radius:10px; overflow:hidden; border:1px solid var(--rule);}
+  .debate-card{padding:22px 20px; background:var(--page);}
+  .debate-card.luther{border-left:5px solid var(--reform-blue); background:var(--reform-blue-pale);}
+  .debate-card.church{border-left:5px solid var(--church-red); background:var(--church-red-pale); border-top:1px solid var(--rule);}
+  .debate-role{font-size:12.5px; font-weight:800; letter-spacing:.6px; margin-bottom:8px;}
+  .debate-role.luther-role{color:var(--reform-blue);}
+  .debate-role.church-role{color:var(--church-red);}
+  .debate-card p{font-size:15.5px; line-height:1.75; margin:0;}
+  .debate-divider{
+    text-align:center; font-family:"Noto Serif KR",serif; font-size:13px; letter-spacing:2px;
+    color:var(--seal-gold); font-weight:700; background:var(--paper);
+    padding:6px 0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  }
+  @media (min-width:640px){
+    .debate-wrap{flex-direction:row; align-items:stretch;}
+    .debate-card{flex:1;}
+    .debate-card.church{border-top:none; border-left:none;}
+    .debate-divider{
+      writing-mode:vertical-rl; padding:16px 4px; border-top:none; border-bottom:none;
+      border-left:1px solid var(--rule); border-right:1px solid var(--rule);
+    }
+  }
+  .card-caveat{font-size:12px; color:var(--sub); font-style:italic; margin-top:14px; text-align:center;}
+
+  /* 화면2: 시스템 프롬프트 박스 */
+  .prompt-box{
+    background:#1f1a14; color:#e7e0d3; border-radius:8px; padding:16px 16px;
+    font-size:12.5px; line-height:1.75; white-space:pre-wrap; max-height:340px; overflow-y:auto;
+    font-family:"Pretendard","Noto Sans KR",monospace; margin:10px 0;
+  }
+  .caution-box{
+    background:var(--church-red-pale); border-left:3px solid var(--church-red); border-radius:0 8px 8px 0;
+    padding:14px 16px; font-size:13.5px; line-height:1.8; margin-top:14px; white-space:pre-line;
+  }
+  .copy-status{text-align:center; font-size:13px; color:var(--sub); min-height:18px; margin-top:6px;}
+
+  .charcount{font-size:12.5px; color:var(--sub); text-align:right; margin-top:4px;}
+  .softwarn{
+    background:var(--reform-blue-pale); border-left:3px solid var(--reform-blue); border-radius:0 8px 8px 0;
+    padding:10px 14px; font-size:13.5px; color:var(--sub); margin-top:10px; display:none;
+  }
+  .softwarn.show{display:block;}
+
+  .final-msg{text-align:center;}
+  .final-msg .mark{font-size:30px; margin-bottom:8px;}
+
+  @media (min-width:760px){ body{font-size:17px;} }
+</style>
+</head>
+<body>
+
+<div class="preview-banner" id="previewBanner">🔍 미리보기 모드 — 제출해도 기록에 안 남아요</div>
+<div class="disclaimer-banner">🎭 AI와의 대화 속 "구교 측 신학자"는 실제 인물이 아니라, 활동을 위해 만든 가상의 인물이야</div>
+
+<div class="header">
+  <div class="eyebrow">2학년 세계사 · 종교 개혁과 신교의 등장</div>
+  <div class="header-rule"></div>
+  <h1 class="serif">1517년, 논쟁의 시작</h1>
+  <p>면벌부를 두고 맞선 루터와 교회, 그 논쟁 속으로</p>
+</div>
+
+<div class="wrap">
+
+  <!-- 화면 0: 로그인 확인 -->
+  <div class="screen active" id="screen-start">
+    <div class="card">
+      <span class="badge-chip">시작하기</span>
+      <h2>먼저 정보를 확인해줘</h2>
+      <p class="sub">포털에서 넘어온 정보가 맞는지 확인하고 시작해줘.</p>
+      <label>학번</label>
+      <input type="text" id="studentId" inputmode="numeric" maxlength="5" placeholder="예: 20305">
+      <label>이름</label>
+      <input type="text" id="studentName" placeholder="이름을 입력하세요">
+      <button class="btn btn-primary" id="startBtn" disabled>시작하기</button>
+    </div>
+  </div>
+
+  <!-- 화면 1: 역할 부여 + 자료 카드 -->
+  <div class="screen" id="screen-cards">
+    <div class="card">
+      <span class="badge-chip">화면 1 · 두 입장</span>
+      <h2>너는 지금부터 루터야</h2>
+      <p class="sub">면벌부 판매를 둘러싸고 부딪힌 두 입장을 먼저 읽어봐. 조금 뒤에 네가 루터 입장에서 교회 측(AI)에게 직접 따져 물을 거야.</p>
+
+      <div class="debate-wrap">
+        <div class="debate-card luther">
+          <div class="debate-role luther-role">✒️ 루터 — 너의 입장</div>
+          <p>너는 루터다. 1517년, 너는 교회가 면벌부를 대대적으로 판매하는 것을 도저히 볼 수 없었다. 그래서 「95개조 반박문」을 써서 이 문제를 정면으로 비판했다.</p>
+        </div>
+        <div class="debate-divider">VS</div>
+        <div class="debate-card church">
+          <div class="debate-role church-role">⛪ 교회 측 — 상대의 입장</div>
+          <p>너는 교회를 지키는 신학자다. 교회는 오래전부터 신자의 신앙과 선행이 함께 구원에 이르는 길이라 가르쳐 왔고, 면벌부도 그 틀 안에서 정당화돼 왔다. 너는 루터의 주장이 교회의 오랜 질서를 뒤흔든다고 본다.</p>
+        </div>
+      </div>
+      <p class="card-caveat">이 카드는 활동을 위해 구성한 요약이며, 정확한 사료 표현이 아니다.</p>
+
+      <button class="btn btn-primary" id="toPromptBtn">교회 측(AI)과 논쟁하러 가기</button>
+    </div>
+  </div>
+
+  <!-- 화면 2: AI 대화 준비 -->
+  <div class="screen" id="screen-prompt">
+    <div class="card">
+      <span class="badge-chip">화면 2 · 대화 준비</span>
+      <h2>AI에게 이 프롬프트를 먼저 붙여넣어줘</h2>
+      <p class="sub">아래 전문을 복사해서, 네가 쓸 AI 앱(제미나이·지피티·뤼튼 등)에 맨 처음 붙여넣어. 그다음부터 루터 입장에서 질문하거나 반박하면 돼.</p>
+
+      <div class="prompt-box" id="promptBox"></div>
+      <button class="btn btn-outline" id="copyPromptBtn">📋 프롬프트 복사하기</button>
+      <p class="copy-status" id="copyStatus"></p>
+
+      <div class="caution-box" id="cautionBox"></div>
+
+      <button class="btn btn-primary" id="toPasteBtn">대화 다 했어, 붙여넣으러 가기</button>
+    </div>
+  </div>
+
+  <!-- 화면 3: 대화 전문 붙여넣기 -->
+  <div class="screen" id="screen-paste">
+    <div class="card">
+      <span class="badge-chip">화면 3 · 대화 붙여넣기</span>
+      <h2>AI와 나눈 대화를 그대로 붙여넣어줘</h2>
+      <p class="sub">요약하지 말고 원문 그대로. 질문·답변을 주고받은 순서대로 전부 복사해서 붙여넣으면 돼.</p>
+
+      <textarea id="transcriptTxt" placeholder="AI와 나눈 대화를 그대로 복사해서 붙여넣어줘"></textarea>
+      <div class="charcount" id="charCount">0자</div>
+      <div class="softwarn" id="softWarn">더 대화해봐도 좋을 것 같아 — 최소 3번 이상 주고받았는지 확인해봐. (그래도 제출은 할 수 있어)</div>
+
+      <button class="btn btn-primary" id="submitBtn" disabled>제출하기</button>
+    </div>
+  </div>
+
+  <!-- 화면 4: 종료 안내 -->
+  <div class="screen" id="screen-done">
+    <div class="card final-msg">
+      <div class="mark">📜</div>
+      <div style="font-weight:800; font-size:16px;">여기까지 끝났어!</div>
+      <div class="sub" style="margin-top:6px;">선생님 강의 듣고, 다음 웹앱에서 마무리 글쓰기로 만나자.</div>
+      <a class="btn btn-seal" id="nextAppBtn" href="#" target="_blank" rel="noopener">다음 웹앱으로 이동 (강의 듣고 누르기) →</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+ * CONFIG
+ * ════════════════════════════════════════════════════════ */
+const CONFIG = {
+  SHEET_WEBAPP_URL: "https://script.google.com/macros/s/AKfycbyXSjCfWY_HiZFqW_OBR-FQDoIfF1z_STqyKWUI31MacHeY3u7hbirFSFDvW-5yuUHaJQ/exec",
+  // TODO(효니): 커리큘럼 시트에 이 문자열 그대로 activity id로 등록할 것.
+  // 웹앱2(마무리 글쓰기)와 같은 차시 행에 "활동 2개·순차진행"으로 등록하면
+  // 이 활동을 끝내기 전엔 웹앱2가 잠기는 게 자동 적용된다(history26 차시-활동 구조).
+  GAME_NAME: "종교개혁_루터논쟁_AI대화",
+  // reformation_write 레포를 GitHub Pages(main 브랜치, 루트)로 배포하면 이 주소가 된다.
+  // Pages 설정을 아직 안 했다면 Settings > Pages에서 Source를 "Deploy from a branch",
+  // Branch를 main/(root)로 지정할 것.
+  NEXT_APP_URL: "https://hyonnie-t.github.io/reformation_write/"
+};
+
+/* 학번(학년1+반2+번호2, 5자리) 파싱 — history26 포털 parseStudentId()와 동일 규칙 */
+function parseStudentId_(sid){
+  const digits = String(sid || "").trim();
+  if (!/^\d{5}$/.test(digits)) return null;
+  return { grade: parseInt(digits.slice(0,1),10), ban: parseInt(digits.slice(1,3),10), number: parseInt(digits.slice(3,5),10) };
+}
+
+/* ── 학생용 유의사항 (확정 문구, 그대로 사용) ── */
+const CAUTION_TEXT =
+`📌 대화하기 전에 이것만 기억해!
+- 이 AI는 가상의 인물이야. 실제 교황이나 특정 인물이 아니야.
+- 너는 루터 입장에서 질문하거나 따지는 거야.
+- 답이 이상하거나("저는 AI라서…" 같은 말) 캐릭터가 깨지면,
+  다시 질문하거나 선생님한테 알려줘.
+- 최소 3번 이상 주고받으면 좋아. 딱 한 번 묻고 끝내지 말기!
+- 대화 다 끝나면 원문 그대로 복사해서 다음 화면에 붙여넣어.
+  (AI한테 "요약해줘"라고 시키지 말기 — 원문 그대로가 평가 대상이야)`;
+
+/* ── AI 시스템 프롬프트 (확정 전문, 그대로 사용) ── */
+const SYSTEM_PROMPT =
+`너는 지금부터 "가상의 구교 측 신학자"야.
+실제 역사 인물이 아니라 가상의 인물이라는 걸 항상 인지하고 있어.
+학생은 마르틴 루터 입장에서 너에게 질문하거나 반박할 거야.
+너는 당시 교회 측 입장에서 답변해줘.
+
+---
+
+### 역할 설정
+
+- 너의 이름은 "구교 측 신학자"야. 실제 교황이나 특정 실존 인물 이름은
+  절대 쓰지 마. (레오 10세, 테첼 등 실존 인물명 사용 금지)
+- 말투는 격식 있지만 중학생이 이해할 수 있게 풀어서 말해.
+- 1인칭은 "본인" 또는 "저"를 써.
+- 교회 입장에서 자신의 논리를 정당화하고 옹호해.
+  단, 억지스럽게 우기지 말고 논리적으로 설명해.
+- 학생(루터)이 반박하면 방어하되, 감정적으로 대응하지 마.
+
+---
+
+### 답변 범위 (이 내용만 다뤄)
+
+아래 내용 범위 안에서만 답변해.
+범위를 벗어난 질문은
+"그건 이 자리에서 다룰 문제가 아니오" 또는
+"그 부분은 본인도 확답하기 어렵소"라고 답해.
+
+✅ 답변 가능한 내용:
+
+1. 면벌부
+   - 면벌부 판매의 신학적 근거(연옥, 보속 개념)
+   - 왜 교회가 면벌부를 정당하다고 봤는지
+   - 성 베드로 대성당 건축 자금과의 관계 (간단히만)
+
+2. 교회의 권위
+   - 왜 성경 해석을 개인이 아닌 교회가 맡아야 한다고 보는지
+   - 교회의 일치(하나로 유지되는 것)가 왜 중요한지
+   - 성직자 위계질서의 의미
+
+3. 루터의 주장에 대한 반박
+   - 95개조 반박문 핵심 주장에 대한 교회 측 논리
+   - "믿음만으로 구원받는다"는 주장에 대한 반박(행위·성사의 중요성)
+   - 왜 루터의 주장이 교회 질서를 위협한다고 보는지
+
+4. 갈등의 전개 (간단하게만)
+   - 왜 대화나 타협이 아니라 강경 대응(파문 등)으로 갔는지
+   - 세속 군주(제후)들이 왜 이 문제에 개입했는지
+
+❌ 답변하지 않을 내용:
+- 실제 교황이나 실존 성직자 개인의 이름·발언으로 답변
+- 종교개혁 이후의 역사(종교전쟁, 30년전쟁, 신항로 개척 등)
+- 다른 종교(이슬람, 불교 등)나 다른 지역사와의 비교
+- 현대 정치·사회 문제와의 비교
+- 역사적으로 확인되지 않은 내용
+
+---
+
+### 답변 방식
+
+1. 길이
+   - 무조건 2~3문장으로만 답해. 절대 그 이상 쓰지 마.
+   - 핵심만 짧게. 중학교 2학년이 읽을 수 있는 수준으로 써.
+
+2. 신학자답게
+   - 자신의 논리에 확신을 가지고 말하되, 독단적으로 굴지 마.
+   - 루터의 주장 중 일리 있는 부분은 부분적으로 인정해도 되지만,
+     교회 입장은 유지해.
+
+3. 틀린 정보 방지
+   - 확실하지 않은 내용은 답하지 마.
+   - 모르는 건 솔직하게 "그 부분은 본인도 확답하기 어렵소"라고 해.
+   - 역사적 사실을 왜곡하지 마.
+
+4. 학생이 반박할 때
+   - "그리 볼 수도 있겠으나" 처럼 학생 의견을 일부 인정하면서도
+     교회 입장을 유지해.
+   - 학생이 날카로운 질문을 하면 "예리한 질문이오"처럼
+     인정하고 대화를 이어가도 돼.
+
+5. 대화 마무리
+   - 학생이 대화를 끝내려 하면
+     "오늘 논쟁, 결코 가볍지 않았소.
+     이 문제가 앞으로 어떻게 흘러갈지는 두고 볼 일이오"
+     처럼 마무리해줘.
+
+---
+
+### 시작 멘트
+
+대화가 시작되면 이렇게 말해:
+
+"루터 수사, 그대의 반박문은 이미 보았소.
+할 말이 있다면 지금 여기서 해보시오.
+본인이 교회의 입장에서 답하겠소."`;
+
+/* ── 화면 전환 ── */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* ── 화면 0: 입력 검증 ── */
+const studentIdEl = document.getElementById("studentId");
+const studentNameEl = document.getElementById("studentName");
+const startBtn = document.getElementById("startBtn");
+
+function checkStart(){
+  startBtn.disabled = !(studentIdEl.value.trim() && studentNameEl.value.trim());
+}
+[studentIdEl, studentNameEl].forEach(el=>el.addEventListener("input", checkStart));
+startBtn.addEventListener("click", ()=> showScreen("screen-cards"));
+
+/* ── 화면 1 → 2 ── */
+document.getElementById("toPromptBtn").addEventListener("click", ()=>{
+  document.getElementById("promptBox").textContent = SYSTEM_PROMPT;
+  document.getElementById("cautionBox").textContent = CAUTION_TEXT;
+  showScreen("screen-prompt");
+});
+
+/* ── 화면 2: 프롬프트 복사 ── */
+document.getElementById("copyPromptBtn").addEventListener("click", async ()=>{
+  const statusEl = document.getElementById("copyStatus");
+  try{
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(SYSTEM_PROMPT);
+    } else {
+      const ta = document.createElement("textarea");
+      ta.value = SYSTEM_PROMPT;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    statusEl.textContent = "✅ 복사됐어! AI 앱에 붙여넣기 해봐.";
+  }catch(err){
+    statusEl.textContent = "복사가 안 됐어. 위 상자를 직접 길게 눌러서 선택 후 복사해줘.";
+  }
+});
+
+/* ── 화면 2 → 3 ── */
+document.getElementById("toPasteBtn").addEventListener("click", ()=> showScreen("screen-paste"));
+
+/* ── 화면 3: 붙여넣기 검증 (300자 미만은 안내만, 차단은 안 함) ── */
+const transcriptTxt = document.getElementById("transcriptTxt");
+const submitBtn = document.getElementById("submitBtn");
+const charCountEl = document.getElementById("charCount");
+const softWarnEl = document.getElementById("softWarn");
+
+function checkPaste(){
+  const len = transcriptTxt.value.trim().length;
+  charCountEl.textContent = len + "자";
+  softWarnEl.classList.toggle("show", len > 0 && len < 300);
+  submitBtn.disabled = len === 0;
+}
+transcriptTxt.addEventListener("input", checkPaste);
+
+/* ── 제출 재시도 헬퍼 — history26 포털 fetchJsonRetry_() 관례(3회·700ms 간격)와 동일.
+ * 순간적인 네트워크 문제로 fetch가 한 번 실패해도 시트 기록이 안 남는 사고를 막기 위함
+ * (효니 피드백, 2026-09-09 — webapp-builder 스킬에 필수 항목으로 명시됨). ── */
+function postWithRetry_(url, payload, triesLeft){
+  triesLeft = (triesLeft == null) ? 3 : triesLeft;
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json())
+  .catch(err => {
+    if (triesLeft > 1) {
+      return new Promise(resolve => setTimeout(resolve, 700))
+        .then(() => postWithRetry_(url, payload, triesLeft - 1));
+    }
+    throw err;
+  });
+}
+
+let PREVIEW = false;
+let submitting = false;
+
+submitBtn.addEventListener("click", async ()=>{
+  if (submitting) return;
+  submitting = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "제출 중...";
+
+  const studentId = studentIdEl.value.trim();
+  const studentName = studentNameEl.value.trim();
+  const transcript = transcriptTxt.value.trim();
+
+  const payload = {
+    studentId: studentId,
+    studentName: studentName,
+    gameName: CONFIG.GAME_NAME,
+    choiceSummary: `대화 길이 약 ${transcript.length}자`,
+    diffSummary: "",
+    reflection: transcript,
+    choicesJson: JSON.stringify({ transcript: transcript, length: transcript.length })
+  };
+
+  if (!PREVIEW) {
+    try{ localStorage.setItem("reform1_pending_submit", JSON.stringify(payload)); }catch(e){}
+
+    try{
+      const json = await postWithRetry_(CONFIG.SHEET_WEBAPP_URL, payload);
+      if (!json || json.result !== "success") throw new Error((json && json.message) || "백엔드가 저장 실패를 반환함");
+      try{ localStorage.removeItem("reform1_pending_submit"); }catch(e){}
+    }catch(err){
+      console.log("전송 실패(콘솔 확인용):", err);
+      submitting = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = "다시 제출하기";
+      alert("여러 번 시도했는데 계속 실패했어. 인터넷 연결을 확인하고 다시 눌러줘! (누르지 않아도 이 화면엔 네가 쓴 대화가 남아있어)");
+      return;
+    }
+  } else {
+    console.log("[미리보기] 실제 전송 안 함:", payload);
+  }
+
+  const nextUrl = new URL(CONFIG.NEXT_APP_URL);
+  if (studentId) nextUrl.searchParams.set("sid", studentId);
+  if (studentName) nextUrl.searchParams.set("name", studentName);
+  document.getElementById("nextAppBtn").href = nextUrl.toString();
+
+  submitting = false;
+  showScreen("screen-done");
+});
+
+/* ── URL 파라미터 자동 채움 / 미리보기 모드 ──
+ * 주의: 위쪽 const(studentIdEl 등)를 참조하므로, 반드시 그 선언과 이벤트 바인딩이
+ * 모두 끝난 뒤(스크립트 맨 아래)에 호출해야 함. TDZ 에러로 전체가 멈추는 걸 방지. */
+function init(){
+  const params = new URLSearchParams(location.search);
+  const sid = params.get("sid") || "";
+  const name = params.get("name") || "";
+  if (sid) studentIdEl.value = sid;
+  if (name) studentNameEl.value = name;
+  checkStart();
+
+  if (params.get("preview") === "1") {
+    PREVIEW = true;
+    document.getElementById("previewBanner").style.display = "block";
+    if (!sid) studentIdEl.value = "20301";
+    if (!name) studentNameEl.value = "교사미리보기";
+    checkStart();
+  }
+}
+
+/* ── 진입점: 모든 선언·바인딩이 끝난 뒤 마지막에 실행 ── */
+init();
+</script>
+
+</body>
+</html>
